@@ -1,40 +1,47 @@
+// src/users/domain/users.service.ts
 import { ConflictException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../app/dtos/create-user.dto';
-import { User, UserDocument } from '../infra/user.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { User } from '../infra/user.entity';  // Import the User entity
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';  // Use TypeORM's Repository
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
+  constructor(
+    @InjectRepository(User)  // Inject the User repository for TypeORM
+    private userRepository: Repository<User>,
+  ) {}
 
-    async createUser(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
-        const { username, password } = createUserDto;
+  // Create a new user
+  async createUser(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    const { username, password } = createUserDto;
 
-        const existingUser = await this.userModel.findOne({ username });
-        if (existingUser) {
-            throw new ConflictException('Username already exists');
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const createdUser = new this.userModel({
-            username,
-            password: hashedPassword,
-        });
-
-        const savedUser = await createdUser.save();
-
-        const { password: _, ...result } = savedUser.toObject();
-        return result;
+    // Check if the user already exists
+    const existingUser = await this.userRepository.findOne({ where: { username } });
+    if (existingUser) {
+      throw new ConflictException('Username already exists');
     }
 
-    async findByUsername(username: string): Promise<UserDocument | null> {
-        return this.userModel.findOne({ username });
-    }
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    async findById(id: string): Promise<UserDocument | null> {
-        return this.userModel.findById(id);
-    }
+    // Create and save the new user
+    const user = this.userRepository.create({ username, password: hashedPassword });
+    const savedUser = await this.userRepository.save(user);
+
+    // Omit password from the returned result
+    const { password: _, ...result } = savedUser;
+    return result;
+  }
+
+  // Find a user by username
+  async findByUsername(username: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { username } });
+  }
+
+  // Find a user by ID
+  async findById(id: number): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
+  }
 }
