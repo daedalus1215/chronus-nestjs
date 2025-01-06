@@ -13,12 +13,12 @@ RUN npm run build
 FROM node:20-alpine
 
 ARG WORK_DIR=/usr/src/app
-ENV PORT=3001
+ENV PORT=3000
 WORKDIR $WORK_DIR
 
 COPY --from=build /usr/src/app/dist ./dist
 COPY package*.json ./
 RUN npm install --production
 
-EXPOSE 3001
+EXPOSE 3000
 CMD ["node", "dist/main.js", "2>&1"]
