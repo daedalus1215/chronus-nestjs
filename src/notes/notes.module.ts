@@ -1,13 +1,15 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersService } from './domain/users.service';
-import { UsersController } from './app/controllers/users.controller';
-import { User } from './domain/entities/user.entity';  // Adjust import based on your new entity
-import { ConfigModule, ConfigService } from '@nestjs/config';
+// notes/notes.module.ts
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Note } from "./infra/schemas/notes/note.entity";
+import { Memo } from "./infra/schemas/notes/memo.entity";
+import { Tag } from "./infra/schemas/tag/tag.entity";
+import { TagNote } from "./infra/schemas/tag/tag-note.entity";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]), // Import the User entity
+    TypeOrmModule.forFeature([Note, Memo, Tag, TagNote]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -23,8 +25,5 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  controllers: [UsersController],
-  exports: [UsersService],
-  providers: [UsersService],
 })
-export class UsersModule {}
+export class NotesModule {}
