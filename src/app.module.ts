@@ -12,10 +12,22 @@ import { Note } from "./notes/infra/schemas/notes/note.entity";
 import { Memo } from "./notes/infra/schemas/notes/memo.entity";
 import { Tag } from "./notes/infra/schemas/tag/tag.entity";
 import { TagNote } from "./notes/infra/schemas/tag/tag-note.entity";
+import { Checklist } from "./notes/infra/schemas/notes/checklist/checklist.entity";
+import { ChecklistItem } from "./notes/infra/schemas/notes/checklist/checklistitem.entity";
+import { ChecklistChecklistItem } from "./notes/infra/schemas/notes/checklist/checklists-checklistitems.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Note, Memo, Tag, TagNote]),
+    TypeOrmModule.forFeature([
+      User,
+      Checklist,
+      ChecklistItem,
+      ChecklistChecklistItem,
+      Note,
+      Memo,
+      Tag,
+      TagNote,
+    ]),
 
     ConfigModule.forRoot({
       isGlobal: true,
