@@ -12,7 +12,6 @@ export class Tag {
   @Column('text')
   description: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  @Column({name: 'user_id'})
+  userId: string;
 }

@@ -32,9 +32,7 @@ export class Note {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE" }) // This ensures deleting a User will delete associated Notes
-  @JoinColumn({ name: "user_id" })
-  user: User;
+  user_id: string;
 
   @Column("date")
   archived_date: Date;

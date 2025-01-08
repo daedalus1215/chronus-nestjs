@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { AppDataSource } from './typeorm/data-source';
 
 async function bootstrap() {
+  await AppDataSource.initialize();
+
   const app = await NestFactory.create(AppModule);
   console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // Temporary log
 
@@ -13,6 +16,7 @@ async function bootstrap() {
     transform: true, // Automatically transform payloads to be objects typed according to their DTO classes
   }));
 
+  await AppDataSource.runMigrations();
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();
