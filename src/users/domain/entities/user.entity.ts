@@ -1,9 +1,23 @@
 import { BaseEntity } from "src/domain/generic/entities/base.entity";
-import { Note } from "src/notes/infra/schemas/notes/note.entity";
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import {
+  Entity,
+  Column,
+  UpdateDateColumn,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity("users")
-export class User extends BaseEntity {
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @CreateDateColumn({ type: "text" })
+  createdAt: string;
+
+  @UpdateDateColumn({ type: "text" })
+  updatedAt: string;
+
   @Column({ unique: true, length: 20 })
   username: string;
 
@@ -12,7 +26,4 @@ export class User extends BaseEntity {
 
   @Column({ length: 100 })
   email: string;
-
-  @OneToMany(() => Note, (note) => note.user)
-  notes: Note[];
 }
