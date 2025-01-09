@@ -1,4 +1,3 @@
-import { BaseEntity } from "src/domain/generic/entities/base.entity";
 import {
   Entity,
   Column,
