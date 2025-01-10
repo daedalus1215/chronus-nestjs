@@ -2,14 +2,12 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   JoinColumn,
   ManyToMany,
   OneToOne,
 } from "typeorm";
 import { Memo } from "./memo.entity";
 import { Checklist } from "./checklist/checklist.entity";
-import { User } from "src/users/domain/entities/user.entity";
 import { Tag } from "../tag/tag.entity";
 
 @Entity("notes")
