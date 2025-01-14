@@ -1,30 +1,35 @@
-# Build Stage
-FROM node:20-alpine AS build
+# Stage 1: Build
+FROM node:20-alpine as build
 
 ARG WORK_DIR=/usr/src/app
 WORKDIR $WORK_DIR
 
-# Install dependencies and build
+# Copy package files
 COPY package*.json ./
-RUN npm install
+
+# Install dependencies
+RUN npm ci --prefer-offline --no-audit --no-fund
+
+# Copy the rest of the source code
 COPY . .
+
+# Build the project
 RUN npm run build
 
-# Runtime Stage
+# Stage 2: Run
 FROM node:20-alpine
 
 ARG WORK_DIR=/usr/src/app
-ENV PORT=443
+ENV NODE_ENV=production
 WORKDIR $WORK_DIR
 
-# Copy built files and install production dependencies
+# Copy built files from the build stage
 COPY --from=build $WORK_DIR/dist ./dist
-COPY --from=build $WORK_DIR/package*.json ./
-COPY --from=build $WORK_DIR/node_modules ./node_modules
+COPY package*.json ./
 
-# Ensure correct ownership and permissions
-RUN chown -R node:node $WORK_DIR
+RUN npm ci --only=production --prefer-offline --no-audit --no-fund
+
 USER node
 
-EXPOSE 443
-CMD ["node", "-r", "tsconfig-paths/register", "dist/main"]
+EXPOSE 3000
+CMD ["node", "dist/main.js"]
