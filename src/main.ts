@@ -2,6 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AppDataSource } from './typeorm/data-source';
+import { register } from 'tsconfig-paths';
+
+register({
+  baseUrl: './dist',
+  paths: {
+    'src/*': ['./dist/src/*'],
+  },
+});
 
 async function bootstrap() {
   await AppDataSource.initialize();
@@ -17,6 +25,6 @@ async function bootstrap() {
   }));
 
   await AppDataSource.runMigrations();
-  await app.listen(3000, '0.0.0.0');
+  await app.listen(process.env.APP_PORT, '0.0.0.0');
 }
 bootstrap();

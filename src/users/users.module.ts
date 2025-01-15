@@ -6,7 +6,7 @@ import { User } from "./domain/entities/user.entity"; // Adjust import based on 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]), // Import the User entity
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsersController],
   exports: [UsersService],
