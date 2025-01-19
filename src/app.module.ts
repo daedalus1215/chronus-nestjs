@@ -1,65 +1,44 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { UsersModule } from "./users/users.module"; // Import UsersModule
-import { AuthModule } from "./auth/auth.module"; // Import AuthModule if required
-import { AppController } from "./app/app.controller";
-import { AppService } from "./domain/app.service";
-import { HealthModule } from "./health/health.module";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import * as Joi from "joi";
-import { User } from "./users/domain/entities/user.entity";
-import { Note } from "./notes/infra/schemas/notes/note.entity";
-import { Memo } from "./notes/infra/schemas/notes/memo.entity";
-import { Tag } from "./notes/infra/schemas/tag/tag.entity";
-import { TagNote } from "./notes/infra/schemas/tag/tag-note.entity";
-import { Checklist } from "./notes/infra/schemas/notes/checklist/checklist.entity";
-import { ChecklistItem } from "./notes/infra/schemas/notes/checklist/checklistitem.entity";
-import { ChecklistChecklistItem } from "./notes/infra/schemas/notes/checklist/checklists-checklistitems.entity";
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module'; 
+import { AuthModule } from './auth/auth.module'; 
+import { AppService } from './shared-kernel/domain/app.service';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      User,
-      Checklist,
-      ChecklistItem,
-      ChecklistChecklistItem,
-      Note,
-      Memo,
-      Tag,
-      TagNote,
-    ]),
-
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ".env",
-      validationSchema: Joi.object({
-        DB_HOST: Joi.string().required(),
-        DB_PORT: Joi.string().required(),
-        DATABASE_USER: Joi.string().required(),
-        DATABASE_PASSWORD: Joi.string().required(),
-        DATABASE_NAME: Joi.string().required(),
-      }),
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      // validationSchema: Joi.object({
+      //   COGNITO_USER_POOL_ID: Joi.string().required(),
+      //   COGNITO_CLIENT_ID: Joi.string().required(),
+      //   COGNITO_REGION: Joi.string().required(),
+      //   COGNITO_ISSUER: Joi.string().required(),
+      //   APP_PORT: Joi.number().required(),
+      //   NODE_ENV: Joi.string().required(),
+      //   DATABASE: Joi.string().required(),
+      //   DATABASE_TYPE: Joi.string().required(),
+      //   JWT_SECRET: Joi.string().required(),
+      // }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        type: "postgres",
-        host: configService.get<string>("DB_HOST"),
-        port: configService.get<number>("DB _PORT"),
-        username: configService.get<string>("DATABASE_USER"),
-        password: configService.get<string>("DATABASE_PASSWORD"),
-        database: configService.get<string>("DATABASE_NAME"),
-        entities: [__dirname + "/**/*.entity{.ts,.js}"],
-        synchronize: false,
+      useFactory: async (configService:ConfigService) => ({
+        type: configService.get<string>('DATABASE_TYPE') as 'postgres' | 'mysql',
+        database: configService.get<string>('DATABASE'), 
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: false, 
+
         migrationsRun: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule,
-    AuthModule,
-    HealthModule,
+    AuthModule, 
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}
