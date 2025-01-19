@@ -5,10 +5,8 @@ import { environmentVariableValidation } from './generic/validations/environment
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // Temporary log
-
   const envVars = environmentVariableValidation();
-
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Strip properties that do not have any decorators
     forbidNonWhitelisted: true, // Throw an error if non-whitelisted properties are present
