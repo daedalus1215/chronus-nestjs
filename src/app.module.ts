@@ -1,33 +1,42 @@
-// src/app.module.ts
-
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module'; // Import UsersModule
-import { AuthModule } from './auth/auth.module'; // Import AuthModule if required
-import { AppController } from './app/app.controller';
-import { AppService } from './domain/app.service';
+import { UsersModule } from './users/users.module'; 
+import { AuthModule } from './auth/auth.module'; 
+import { AppService } from './shared-kernel/domain/app.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`, // Use appropriate .env file
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      // validationSchema: Joi.object({
+      //   COGNITO_USER_POOL_ID: Joi.string().required(),
+      //   COGNITO_CLIENT_ID: Joi.string().required(),
+      //   COGNITO_REGION: Joi.string().required(),
+      //   COGNITO_ISSUER: Joi.string().required(),
+      //   APP_PORT: Joi.number().required(),
+      //   NODE_ENV: Joi.string().required(),
+      //   DATABASE: Joi.string().required(),
+      //   DATABASE_TYPE: Joi.string().required(),
+      //   JWT_SECRET: Joi.string().required(),
+      // }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService) => ({
-        type: 'sqlite',
-        database: 'db.sqlite',  // Path to your SQLite database file
-        entities: [__dirname + '/**/*.entity{.ts,.js}'], // Automatically load entities
-        synchronize: true, // For development; disable in production
+      useFactory: async (configService:ConfigService) => ({
+        type: configService.get<string>('DATABASE_TYPE') as 'postgres' | 'mysql',
+        database: configService.get<string>('DATABASE'), 
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: false, 
+        migrationsRun: true,
       }),
       inject: [ConfigService],
     }),
-    UsersModule, // Add UsersModule
-    AuthModule, // Include AuthModule if needed
+    UsersModule,
+    AuthModule, 
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}
