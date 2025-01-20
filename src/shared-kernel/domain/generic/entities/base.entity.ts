@@ -1,8 +1,7 @@
 import { CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, Entity } from 'typeorm';
 
-@Entity()
-export class BaseEntity {
-  @PrimaryGeneratedColumn()
+export abstract class BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @CreateDateColumn({ type: 'text' })  // Use 'text' for SQLite compatibility

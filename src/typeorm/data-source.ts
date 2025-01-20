@@ -1,20 +1,14 @@
-import * as dotenv from 'dotenv';
-import * as path from 'path';
+import * as dotenv from "dotenv";
+import { User } from "src/users/domain/entities/user.entity";
 dotenv.config();
-
-import { DataSource } from 'typeorm';
+import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
-    type: 'postgres',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10),
-    username: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    synchronize: false,
-    logging: process.env.DB_LOGGING === 'true',
-    entities: [path.resolve(__dirname, '../../**/*.entity{.ts,.js}')],
-    migrations: [path.resolve(__dirname, './migrations/*{.ts,.js}')],
-    migrationsTableName: 'migrations',
-    migrationsRun: true,
+  type: "sqlite", // Specify SQLite as the database type
+  database: process.env.DATABASE || "database.sqlite", // Path to the SQLite database file
+  entities: [User, __dirname + "/../**/*.entity{.ts,.js}"],
+  migrations: [__dirname + "/migrations/*{.ts,.js}"], // Path to migration files
+  synchronize: false, // Always false in production
+  migrationsRun: true, // Automatically run migrations on app start
+  logging: true, // Optional: Enable logging for debugging
 });
