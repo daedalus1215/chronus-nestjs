@@ -12,12 +12,4 @@ export class UsersController {
   getProfile(@Req() req) {
     return req.user;
   }
-
-  @Post('register')
-  @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.createUser(createUserDto);
-    return user;
-  }
-
 }

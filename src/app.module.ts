@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module'; 
 import { AuthModule } from './auth/auth.module'; 
 import { AppService } from './shared-kernel/domain/app.service';
-import { NotesModule } from './notes/notes.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -30,13 +30,13 @@ import { NotesModule } from './notes/notes.module';
         database: configService.get<string>('DATABASE'), 
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false, 
-
         migrationsRun: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     AuthModule, 
+    HealthModule
   ],
   controllers: [],
   providers: [AppService],
