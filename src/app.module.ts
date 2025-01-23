@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module'; 
 import { AppService } from './shared-kernel/domain/app.service';
 import { HealthModule } from './health/health.module';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { HealthModule } from './health/health.module';
     }),
     UsersModule,
     AuthModule, 
-    HealthModule
+    HealthModule,
+    NotesModule
   ],
   controllers: [],
   providers: [AppService],
