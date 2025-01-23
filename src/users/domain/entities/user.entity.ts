@@ -5,12 +5,11 @@ import {
 } from "typeorm";
 
 @Entity("users")
-export class User extends BaseEntity{
+export class User extends BaseEntity {
 
   @Column({ length: 100 })
   email: string;
 
   @Column({ length: 100 })
   authenticationId: string;
-
 }
