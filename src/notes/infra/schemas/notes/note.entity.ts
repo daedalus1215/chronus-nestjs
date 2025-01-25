@@ -2,6 +2,8 @@ import { BaseEntity } from "src/shared-kernel/domain/generic/entities/base.entit
 import {
   Entity,
   Column,
+  ManyToMany,
+  JoinColumn,
   // PrimaryGeneratedColumn,
   // JoinColumn,
   // ManyToMany,
@@ -22,16 +24,12 @@ export class Note extends BaseEntity {
   // @JoinColumn({ name: "checklist_id" })
   // checklist: Checklist | null;
 
-  // @ManyToMany(() => Tag, (tag) => tag.id)
-  // @JoinColumn({ name: "tag_id" })
-  // tags: Tag[] | null;
-
   @Column()
   name: string;
 
   @Column({name: 'user_id'})
   userId: string;
 
-  @Column('date')
+  @Column({name: 'date', nullable: true})
   archived_date: Date;
 }

@@ -6,8 +6,8 @@ import { Note } from "./infra/schemas/notes/note.entity";
 // import { ChecklistItem } from "./infra/schemas/notes/checklist/checklistitem.entity";
 // import { ChecklistChecklistItem } from "./infra/schemas/notes/checklist/checklists-checklistitems.entity";
 // import { Memo } from "./infra/schemas/notes/memo.entity";
-// import { Tag } from "./infra/schemas/tag/tag.entity";
-// import { TagNote } from "./infra/schemas/tag/tag-note.entity";
+import { Tag } from "./infra/schemas/tag/tag.entity";
+import { TagNote } from "./infra/schemas/tag/tag-note.entity";
 import { GetNoteNamesByUserIdRepository } from "./infra/repositories/get-note-names-by-user-id.repository";
 import { getNoteNamesByUserIdAction } from "./apps/actions/get-note-names-by-userId.action";
 
@@ -19,8 +19,8 @@ import { getNoteNamesByUserIdAction } from "./apps/actions/get-note-names-by-use
       // ChecklistChecklistItem,
       Note,
       // Memo,
-      // Tag,
-      // TagNote,
+      Tag,
+      TagNote,
     ]),
   ],
   controllers: [getNoteNamesByUserIdAction],
