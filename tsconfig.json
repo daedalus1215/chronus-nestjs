@@ -23,6 +23,6 @@
       "src/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "1737838119632-create__tag_note__table.ts", "1737837485962-create__tag_note__table.ts", "1737838119632-create__tag_note__table.ts", "1737838119632-create__tag_note__table.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
