@@ -10,6 +10,6 @@ export class User extends BaseEntity {
   @Column({ length: 100 })
   email: string;
 
-  @Column({ length: 100 })
+  @Column({ length: 100, name: 'authentication_id' })
   authenticationId: string;
 }
