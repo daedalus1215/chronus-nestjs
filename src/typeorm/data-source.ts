@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import { User } from "src/users/domain/entities/user.entity";
 dotenv.config();
 import { DataSource } from "typeorm";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 export const AppDataSource = new DataSource({
   type: "sqlite", // Specify SQLite as the database type
@@ -10,5 +11,5 @@ export const AppDataSource = new DataSource({
   migrations: [__dirname + "/migrations/*{.ts,.js}"], // Path to migration files
   synchronize: false, // Always false in production
   migrationsRun: true, // Automatically run migrations on app start
-  logging: true, // Optional: Enable logging for debugging
+  namingStrategy: new SnakeNamingStrategy(),
 });

@@ -1,15 +1,16 @@
-// import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-// import { Note } from './note.entity';
+import {
+  Entity,
+  Column,
+  OneToOne,
+} from "typeorm";
+import { Note } from "./note.entity";
+import { BaseEntity } from "src/shared-kernel/domain/generic/entities/base.entity";
 
-// @Entity('memos')
-// export class Memo {
-//   @PrimaryGeneratedColumn()
-//   id: string;
+@Entity("memos")
+export class Memo extends BaseEntity {
+  @Column("text")
+  description: string;
 
-//   @Column('text')
-//   description: string;
-
-
-//   @OneToMany(() => Note, (note) => note.memo)
-//   notes: Note[];
-// }
+  @OneToOne(() => Note, (note) => note.id, { onDelete: "CASCADE" })
+  note: Note;
+}
