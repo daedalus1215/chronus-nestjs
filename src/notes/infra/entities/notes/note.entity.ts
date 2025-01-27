@@ -20,10 +20,11 @@ import { Tag } from "../tag/tag.entity";
 @Entity("notes")
 export class Note extends BaseEntity {
   @OneToOne(() => Memo, (memo) => memo.id, {
+    cascade: true,
     nullable: true,
     onDelete: 'SET NULL',
   })
-  @JoinColumn()
+  @JoinColumn({name: "memo_id"})
   memo: Memo | null;
 
   // @OneToOne(() => Checklist, { nullable: true })
