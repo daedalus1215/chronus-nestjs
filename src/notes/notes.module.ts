@@ -7,7 +7,7 @@ import { GetNoteNamesByUserIdRepository } from "./infra/repositories/get-note-na
 import { getNoteNamesByUserIdAction } from "./apps/actions/get-note-names-by-userId.action";
 import { Memo } from "./infra/entities/notes/memo.entity";
 import { CreateNoteAction } from "./apps/actions/create-note.action";
-import { CreateNoteTransactionScript } from "./domain/transaction-scripts/create-note.transaction.script";
+import { CreateNoteTransactionScript } from "./domain/notes/transaction-scripts/create-note.transaction.script";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Note, Memo, Tag, TagNote])],
