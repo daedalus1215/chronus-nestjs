@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { CreateNoteDto } from '../dtos/create-note.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateNoteTransactionScript } from 'src/notes/domain/notes/transaction-scripts/create-note.transaction.script';
+import { CreateNoteTransactionScript } from 'src/notes/domain/transaction-scripts/create-note.transaction.script';
 
 @ApiTags('Notes')
 @Controller('notes')

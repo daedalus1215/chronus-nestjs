@@ -1,5 +1,4 @@
-import { User } from 'src/users/domain/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { Note } from '../notes/note.entity';
 
 @Entity('tags')
@@ -10,7 +9,7 @@ export class Tag {
   @Column()
   name: string;
 
-  @Column('text')
+  @Column('text', {default: ''})
   description: string;
 
   @Column({name: 'user_id'})
