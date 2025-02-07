@@ -16,5 +16,4 @@ export class Alter_userTable_authenticationIdColumn1737838793360 implements Migr
         await queryRunner.query(`INSERT INTO "users"("id", "email", "authenticationId", "created_date", "updated_date") SELECT "id", "email", "authentication_id", "created_date", "updated_date" FROM "temporary_users"`);
         await queryRunner.query(`DROP TABLE "temporary_users"`);
     }
-
 }

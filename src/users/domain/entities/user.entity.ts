@@ -12,4 +12,7 @@ export class User extends BaseEntity {
 
   @Column({ length: 100, name: 'authentication_id' })
   authenticationId: string;
+
+  @Column({ length: 100 , name: 'password'})
+  password: string;
 }
