@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module'; 
 import { AuthModule } from './auth/auth.module'; 
-import { AppService } from './shared-kernel/domain/app.service';
 import { HealthModule } from './health/health.module';
 import { NotesModule } from './notes/notes.module';
 
@@ -41,6 +40,5 @@ import { NotesModule } from './notes/notes.module';
     NotesModule
   ],
   controllers: [],
-  providers: [AppService],
 })
 export class AppModule {}
