@@ -10,7 +10,7 @@ import { UserAggregator } from "./domain/aggregators/user.aggregator";
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsersController],
-  exports: [UserAggregator],
   providers: [UsersService, UserAggregator],
+  exports: [UserAggregator, TypeOrmModule],
 })
 export class UsersModule {}

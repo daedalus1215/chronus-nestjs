@@ -13,10 +13,8 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userAggregator.findByEmail(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      // If the user is found and the password matches, return the user object without the password
-      // src/auth/auth.service.ts
       const { password, ...result } = user;
-      return result; // Return the user without the password
+      return result;
     }
     return null;
   }
