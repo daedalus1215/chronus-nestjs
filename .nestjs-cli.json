@@ -1,7 +1,0 @@
-{
-    "compilerOptions": {
-      "src": "src",
-      "outDir": "dist"
-    }
-  }
-  

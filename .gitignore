@@ -1,4 +1,2 @@
-node_modules
-dist
-.env.development
-db.sqlite
+node_modules/*
+dist/*
