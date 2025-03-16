@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app/app.controller';
-import { AppService } from './domain/app.service';
+import { DummyController } from './dummy-domain/app/dummy.controller';
+import { DummyService } from './dummy-domain/domain/dummy.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DummyDomainModule } from './dummy-domain/dummy-domain.module';
 
 @Module({
   imports: [
@@ -24,8 +25,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     UsersModule,
     AuthModule,
+    DummyDomainModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [DummyController],
+  providers: [DummyService],
 })
 export class AppModule { }
