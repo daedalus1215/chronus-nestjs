@@ -1,0 +1,8 @@
+-- SQLite
+.open ../db.sqlite
+
+-- Check available tables
+.tables
+
+-- Query the user table (note: the table name is 'user' not 'users')
+select * from user;
