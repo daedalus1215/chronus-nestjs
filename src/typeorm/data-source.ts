@@ -1,15 +1,13 @@
-import * as dotenv from "dotenv";
-import { User } from "src/users/domain/entities/user.entity";
-dotenv.config();
-import { DataSource } from "typeorm";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { DataSource } from 'typeorm';
+import { User } from '../users/domain/entities/user.entity';
 
-export const AppDataSource = new DataSource({
-  type: "sqlite", // Specify SQLite as the database type
-  database: process.env.DATABASE || "database.sqlite", // Path to the SQLite database file
-  entities: [User, __dirname + "/../**/*.entity{.ts,.js}"],
-  migrations: [__dirname + "/migrations/*{.ts,.js}"], // Path to migration files
-  synchronize: false, // Always false in production
-  migrationsRun: true, // Automatically run migrations on app start
-  namingStrategy: new SnakeNamingStrategy(),
+const AppDataSource = new DataSource({
+    type: 'sqlite',
+    database: 'db.sqlite',
+    entities: [User],
+    migrations: ['src/typeorm/migrations/*.ts'],
+    synchronize: false,
+    logging: true
 });
+
+module.exports = AppDataSource; 

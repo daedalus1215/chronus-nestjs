@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
-import { UsersService } from '../../domain/users.service';
+import { UsersService } from 'src/users/domain/users.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { JwtAuthGuard } from '../../../auth/app/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -12,4 +12,12 @@ export class UsersController {
   getProfile(@Req() req) {
     return req.user;
   }
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.createUser(createUserDto);
+    return user;
+  }
+
 }
