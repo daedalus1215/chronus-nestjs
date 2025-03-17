@@ -17,9 +17,9 @@ import { DummyDomainModule } from './dummy-domain/dummy-domain.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'sqlite',
-        database: 'db.sqlite',
+        database: configService.get<string>('DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Set to false in production
+        synchronize: false, // Set to false in production
       }),
       inject: [ConfigService],
     }),
