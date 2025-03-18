@@ -1,8 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from '../app/dtos/create-user.dto';
+import { CreateUserDto } from '../app/dtos/requests/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from '../infra/repositories/user.repository';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { omit } from 'lodash';
 
 @Injectable()
 export class UsersService {
@@ -11,22 +12,21 @@ export class UsersService {
     ) {}
 
     async createUser(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
-        const { username, password } = createUserDto;
+        const { username, password: rawPassword } = createUserDto;
 
         const existingUser = await this.userRepository.findByUsername(username);
         if (existingUser) {
             throw new ConflictException('Username already exists');
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
         const savedUser = await this.userRepository.create({
             username,
             password: hashedPassword,
         });
 
-        const { password: _, ...result } = savedUser;
-        return result;
+        return omit(savedUser, ['password']);
     }
 
     async findByUsername(username: string): Promise<User | null> {

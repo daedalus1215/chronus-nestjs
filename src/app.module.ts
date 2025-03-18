@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DummyDomainModule } from './dummy-domain/dummy-domain.module';
+import { NotesModule } from './notes/notes.module';
+import { dirname } from 'path';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { DummyDomainModule } from './dummy-domain/dummy-domain.module';
       useFactory: async (configService: ConfigService) => ({
         type: 'sqlite',
         database: configService.get<string>('DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false, // Set to false in production
       }),
       inject: [ConfigService],
@@ -26,6 +28,7 @@ import { DummyDomainModule } from './dummy-domain/dummy-domain.module';
     UsersModule,
     AuthModule,
     DummyDomainModule,
+    NotesModule,
   ],
   controllers: [DummyController],
   providers: [DummyService],
