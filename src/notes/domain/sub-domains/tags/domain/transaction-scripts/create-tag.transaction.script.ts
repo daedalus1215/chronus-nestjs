@@ -7,7 +7,7 @@ import { CreateTagDto } from '../../app/dtos/create-tag.dto';
 @Injectable()
 export class CreateTagTransactionScript {
   constructor(
-    @InjectRepository(Tag);
+    @InjectRepository(Tag)
     private tagsRepository: Repository<Tag>,
   ) {}
 
