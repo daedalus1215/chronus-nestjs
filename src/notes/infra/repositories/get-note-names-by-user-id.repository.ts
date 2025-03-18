@@ -1,8 +1,7 @@
-import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { Note } from "../entities/notes/note.entity";
+import { Note } from "../../domain/entities/notes/note.entity";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-
 @Injectable()
 export class GetNoteNamesByUserIdRepository {
   constructor(

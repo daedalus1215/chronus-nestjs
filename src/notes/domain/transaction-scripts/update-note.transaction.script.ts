@@ -1,9 +1,9 @@
 // src/notes/apps/actions/update-note.action.ts
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Note } from "../../infra/entities/notes/note.entity";
+import { Note } from "../entities/notes/note.entity";
 import { Repository } from "typeorm";
-import { Tag } from "src/notes/infra/entities/tag/tag.entity";
+import { Tag } from "src/notes/domain/entities/tag/tag.entity";
 import { UpdateNoteDto } from "src/notes/apps/dtos/requests/update-note.dto";
 
 @Injectable()
