@@ -13,7 +13,6 @@ import {
 import { Memo } from "./memo.entity";
 import { Tag } from "../tag/tag.entity";
 import { BaseEntity } from "src/shared-kernel/domain/entities/base.entity";
-// import { Memo } from "./memo.entity";
 // import { Checklist } from "./checklist/checklist.entity";
 // import { Tag } from "../tag/tag.entity";
 

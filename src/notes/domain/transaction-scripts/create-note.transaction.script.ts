@@ -9,7 +9,9 @@ import { Repository } from "typeorm";
 export class CreateNoteTransactionScript {
   constructor(
     @InjectRepository(Note)
-    private notesRepository: Repository<Note>
+    private notesRepository: Repository<Note>,
+    @InjectRepository(Memo)
+    private memoRepository: Repository<Memo>
     // @InjectRepository(Checklist)
     // private checklistsRepository: Repository<Checklist>
   ) {}
@@ -23,9 +25,11 @@ export class CreateNoteTransactionScript {
 
     if (isMemo) {
       const memo = new Memo();
-      note.memo = memo;
-    }else {
-        throw Error("Checklist not implemented yet");
+      memo.description = "";
+      const savedMemo = await this.memoRepository.save(memo);
+      note.memo = savedMemo;
+    } else {
+      throw Error("Checklist not implemented yet");
     }
 
     return this.notesRepository.save(note);
