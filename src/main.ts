@@ -6,6 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // Temporary log
 
+  // Enable CORS
+  app.enableCors({
+    origin: true, // Allow all origins in development. For production, specify your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   // Enable global validation
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Strip properties that do not have any decorators

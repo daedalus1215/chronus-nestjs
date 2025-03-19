@@ -3,17 +3,16 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CreateNoteDto } from "src/notes/apps/dtos/requests/create-note.dto";
 import { Memo } from "src/notes/domain/entities/notes/memo.entity";
 import { Note } from "src/notes/domain/entities/notes/note.entity";
+import { NoteTagRepository } from "src/notes/infra/repositories/note-tag.repository";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class CreateNoteTransactionScript {
   constructor(
     @InjectRepository(Note)
-    private notesRepository: Repository<Note>,
+    private noteTagRepository: NoteTagRepository,
     @InjectRepository(Memo)
     private memoRepository: Repository<Memo>
-    // @InjectRepository(Checklist)
-    // private checklistsRepository: Repository<Checklist>
   ) {}
 
   async apply(createNoteDto: CreateNoteDto): Promise<Note> {
@@ -32,6 +31,6 @@ export class CreateNoteTransactionScript {
       throw Error("Checklist not implemented yet");
     }
 
-    return this.notesRepository.save(note);
+    return this.noteTagRepository.save(note);
   }
 }
