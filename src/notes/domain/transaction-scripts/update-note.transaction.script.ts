@@ -1,39 +1,30 @@
-// src/notes/apps/actions/update-note.action.ts
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Note } from "../entities/notes/note.entity";
-import { Repository } from "typeorm";
-import { Tag } from "src/notes/domain/entities/tag/tag.entity";
 import { UpdateNoteDto } from "src/notes/apps/dtos/requests/update-note.dto";
+import { NoteTagRepository } from "../../infra/repositories/note-tag.repository";
 
 @Injectable()
 export class UpdateNoteTransactionScript {
   constructor(
-    @InjectRepository(Note)
-    private notesRepository: Repository<Note>,
-    @InjectRepository(Tag)
-    private tagsRepository: Repository<Tag>
+    private readonly noteRepository: NoteTagRepository
   ) {}
 
   async apply(id: number, updateNoteDto: UpdateNoteDto): Promise<Note> {
-    let note = await this.notesRepository.findOne({
-      where: { id },
-      relations: ["tags"],
-    });
+    let note = await this.noteRepository.findById(id);
 
     if (!note) {
       throw new NotFoundException("Note not found");
     }
 
-    if (updateNoteDto.name !== undefined) {
+    if (updateNoteDto?.name) {
       note.name = updateNoteDto.name;
     }
 
-    if (updateNoteDto.description !== undefined) {
+    if (updateNoteDto?.description) {
       note.memo.description = updateNoteDto.description;
     }
 
-    if (updateNoteDto.tags) {
+    if (updateNoteDto?.tags) {
       const existingTags = note.tags.map((tag) => tag.name);
 
       const newTags = updateNoteDto.tags.filter(
@@ -44,19 +35,17 @@ export class UpdateNoteTransactionScript {
       );
 
       await this.removeTags(tagsToRemove, note);
-
       await this.addTags(newTags, note);
     }
 
-    return this.notesRepository.save(note);
+    return await this.noteRepository.save(note);
   }
 
   private async addTags(newTags: string[], note: Note) {
     for (const tagName of newTags) {
-      let tag = await this.tagsRepository.findOne({ where: { name: tagName } });
+      let tag = await this.noteRepository.findTagByName(tagName);
       if (!tag) {
-        tag = this.tagsRepository.create({ name: tagName });
-        await this.tagsRepository.save(tag);
+        tag = await this.noteRepository.createTag({ name: tagName });
       }
       note.tags.push(tag);
     }
@@ -67,7 +56,7 @@ export class UpdateNoteTransactionScript {
       const tagToRemove = note.tags.find((tag) => tag.name === tagName);
       if (tagToRemove) {
         note.tags = note.tags.filter((tag) => tag !== tagToRemove);
-        await this.tagsRepository.remove(tagToRemove);
+        await this.noteRepository.removeTag(tagToRemove);
       }
     }
   }
